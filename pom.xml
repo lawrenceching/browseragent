@@ -14,6 +14,7 @@
 		<maven.compiler.source>11</maven.compiler.source>
 		<maven.compiler.target>11</maven.compiler.target>
 		<maven.compiler.compilerVersion>11</maven.compiler.compilerVersion>
+		<main.class>me.imlc.browseragent.App</main.class>
 	</properties>
 
 	<dependencies>
@@ -104,9 +105,7 @@
 				<executions>
 					<execution>
 						<id>compile</id>
-						<goals>
-							<goal>compile</goal>
-						</goals>
+						<goals> <goal>compile</goal> </goals>
 						<configuration>
 							<sourceDirs>
 								<sourceDir>${project.basedir}/src/main/kotlin</sourceDir>
@@ -125,13 +124,54 @@
 						</configuration>
 					</execution>
 				</executions>
-				<configuration>
-					<jvmTarget>1.8</jvmTarget>
-				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.6</version>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals> <goal>single</goal> </goals>
+						<configuration>
+							<archive>
+								<manifest>
+									<mainClass>${main.class}</mainClass>
+								</manifest>
+							</archive>
+							<descriptorRefs>
+								<descriptorRef>jar-with-dependencies</descriptorRef>
+							</descriptorRefs>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.jetbrains.kotlin</groupId>
+				<artifactId>kotlin-maven-plugin</artifactId>
+				<version>${kotlin.version}</version>
+				<executions>
+					<execution>
+						<id>compile</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>test-compile</id>
+						<phase>test-compile</phase>
+						<goals>
+							<goal>test-compile</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.0</version>
 				<executions>
 					<!-- Replacing default-compile as it is treated specially by maven -->
 					<execution>
@@ -146,21 +186,17 @@
 					<execution>
 						<id>java-compile</id>
 						<phase>compile</phase>
-						<goals>
-							<goal>compile</goal>
-						</goals>
+						<goals> <goal>compile</goal> </goals>
 					</execution>
 					<execution>
 						<id>java-test-compile</id>
 						<phase>test-compile</phase>
-						<goals>
-							<goal>testCompile</goal>
-						</goals>
-						<configuration>
-							<skip>${maven.test.skip}</skip>
-						</configuration>
+						<goals> <goal>testCompile</goal> </goals>
 					</execution>
 				</executions>
+				<configuration>
+					<release>11</release>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
