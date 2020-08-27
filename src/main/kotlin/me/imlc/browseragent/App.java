@@ -4,21 +4,32 @@ import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.ServiceManager;
 import me.imlc.browseragent.logger.Logger;
 
+import java.util.Objects;
+
 public class App {
 
 	private ServiceManager serviceManager;
 	private BilibiliMonitorService bilibiliMonitorService;
 	private Logger logger = new Logger(App.class);
 	private Browser browser = new Browser();
+	private ElasticSearch es;
+	private Config config;
 
 
-	public App() {
+	public App(Config config) {
+
+		this.config = config;
+		this.es = new ElasticSearch(
+				config.getEsHost(),
+				config.getEsIndex()
+		);
 
 		bilibiliMonitorService = new BilibiliMonitorService(
 				Lists.newArrayList(
 						"https://www.bilibili.com/video/BV1WE411q7TA"
 				),
-				browser
+				browser,
+				es
 		);
 
 		serviceManager = new ServiceManager(
@@ -31,6 +42,9 @@ public class App {
 
 
 	public void start() {
+
+		es.connect();
+
 		serviceManager.startAsync();
 		serviceManager.awaitHealthy();
 	}
@@ -44,7 +58,24 @@ public class App {
 	}
 
 	public static void main(String[] args) throws InterruptedException {
-		final App app = new App();
+
+		Logger logger = new Logger("Main");
+
+		String esHost = System.getProperty("elasticsearch.host");
+		String esIndex = System.getProperty("elasticsearch.index");
+		Objects.nonNull(esHost);
+		Objects.nonNull(esIndex);
+
+		Config config = new Config(
+				true,
+				esHost,
+				esIndex
+		);
+
+		logger.info("Start up application with config: " + config.toString());
+
+
+		final App app = new App(config);
 		app.start();
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			@Override

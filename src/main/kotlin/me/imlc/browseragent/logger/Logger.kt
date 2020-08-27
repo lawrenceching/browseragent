@@ -31,5 +31,9 @@ class Logger {
     fun error(msg: String?) {
         logger.error(msg)
     }
+
+    fun isDebugEnabled(): Boolean {
+        return LogConfig.isDebugEnabled
+    }
 }
 

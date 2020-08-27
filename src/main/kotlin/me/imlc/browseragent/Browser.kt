@@ -84,7 +84,10 @@ class Browser {
 
 
         driver.get(url)
+
         return BilibiliMetric(
+                title = driver.title,
+                url = url,
                 like = readNumber("//*[@id=\"arc_toolbar_report\"]/div[1]/span[1]"),
                 coin =  readNumber("//*[@id=\"arc_toolbar_report\"]/div[1]/span[2]"),
                 collect = readNumber("//*[@id=\"arc_toolbar_report\"]/div[1]/span[3]"),
