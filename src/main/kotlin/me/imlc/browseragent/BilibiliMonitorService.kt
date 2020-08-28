@@ -29,6 +29,8 @@ class BilibiliMonitorService(
                 coin = bilibiliMetric.coin,
                 collect = bilibiliMetric.collect,
                 share = bilibiliMetric.share,
+                view = bilibiliMetric.view,
+                danmu = bilibiliMetric.danmu,
                 timestamp = System.currentTimeMillis()
             ))
         }

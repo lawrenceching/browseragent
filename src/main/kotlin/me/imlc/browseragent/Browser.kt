@@ -17,13 +17,15 @@ class Browser {
 
 
     constructor() {
-        val options = ChromeOptions()
+//        val options = ChromeOptions()
+//
+//        // https://github.com/SeleniumHQ/selenium/wiki/ChromeDriver
+//        options.setBinary("/Applications/Google Chrome.app/Contents/MacOS/Google Chrome")
+//
+//        logger.info("Using Google Chrome ${options.version}")
+//        driver = ChromeDriver(options)
 
-        // https://github.com/SeleniumHQ/selenium/wiki/ChromeDriver
-        options.setBinary("/Applications/Google Chrome.app/Contents/MacOS/Google Chrome")
-
-        logger.info("Using Google Chrome ${options.version}")
-        driver = ChromeDriver(options)
+        driver = ChromeDriver()
     }
 
     fun get(url: String) {
@@ -60,6 +62,35 @@ class Browser {
 //        actions.moveToElement(findLoginButtonAfterHover()).click().perform()
     }
 
+    private val CHINESE_WAN = "万"
+    private fun chineseNumberToInt(chinese: String): Int {
+        val factor = when {
+            chinese.contains(CHINESE_WAN) -> 10000
+            else -> 1
+        }
+
+        val number = chinese.replace(CHINESE_WAN, "")
+        return (number.toDouble() * factor).toInt()
+    }
+
+    private fun readView(): Int? {
+        val xpath = "//*[@id=\"viewbox_report\"]/div[2]/span[1]"
+        val e = driver.findElement(By.xpath(xpath))
+        val text = e.text
+        val number = text.replace("播放 · ", "")
+        logger.debug("Read view: $number")
+        return chineseNumberToInt(number)
+    }
+
+    private fun readDanmu(): Int? {
+        val xpath = "//*[@id=\"viewbox_report\"]/div[2]/span[2]"
+        val e = driver.findElement(By.xpath(xpath))
+        val text = e.text
+        val number = text.replace("弹幕", "")
+        logger.debug("Read dan mu: $number")
+        return chineseNumberToInt(number)
+    }
+
     fun readBilibiliMetricsFrom(url: String): BilibiliMetric {
 
         fun readNumber(xpath: String): Int? {
@@ -91,7 +122,9 @@ class Browser {
                 like = readNumber("//*[@id=\"arc_toolbar_report\"]/div[1]/span[1]"),
                 coin =  readNumber("//*[@id=\"arc_toolbar_report\"]/div[1]/span[2]"),
                 collect = readNumber("//*[@id=\"arc_toolbar_report\"]/div[1]/span[3]"),
-                share = readNumber("//*[@id=\"arc_toolbar_report\"]/div[1]/span[4]")
+                share = readNumber("//*[@id=\"arc_toolbar_report\"]/div[1]/span[4]"),
+                view = readView(),
+                danmu = readDanmu()
         )
 
     }

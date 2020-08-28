@@ -10,7 +10,9 @@ data class BilibiliEsData(
         val like: Int?,
         val coin: Int?,
         val collect: Int?,
-        val share: Int?
+        val share: Int?,
+        val view: Int?,
+        val danmu: Int?
 ) {
     fun toJson(): String {
         return """
@@ -21,6 +23,8 @@ data class BilibiliEsData(
     "coin": $coin,
     "collect": $collect,
     "share": $share,
+    "view": $view,
+    "danmu": $danmu,
     "@timestamp": $timestamp
 }
         """.trimIndent()
