@@ -26,7 +26,11 @@ public class App {
 
 		bilibiliMonitorService = new BilibiliMonitorService(
 				Lists.newArrayList(
-						"https://www.bilibili.com/video/BV1WE411q7TA"
+						"https://www.bilibili.com/video/BV1WE411q7TA",
+						"https://www.bilibili.com/video/BV1Xt411h7Zy",
+						"https://www.bilibili.com/video/BV1oA411e7wE",
+						"https://www.bilibili.com/video/BV1zJ411U7UM",
+						"https://www.bilibili.com/video/BV13b411u7Z1"
 				),
 				browser,
 				es
@@ -53,7 +57,7 @@ public class App {
 		serviceManager.stopAsync();
 		serviceManager.awaitStopped();
 
-		browser.close();
+		browser.quit();
 		logger.info("Closed browser");
 	}
 

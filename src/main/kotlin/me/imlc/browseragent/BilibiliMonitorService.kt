@@ -34,6 +34,8 @@ class BilibiliMonitorService(
                 timestamp = System.currentTimeMillis()
             ))
         }
+
+        browser.closeTabs()
     }
 
     override fun executor(): ScheduledExecutorService {

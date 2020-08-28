@@ -7,6 +7,7 @@ import org.openqa.selenium.chrome.ChromeOptions
 import org.openqa.selenium.support.ui.ExpectedConditions
 import org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated
 import org.openqa.selenium.support.ui.WebDriverWait
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 
@@ -47,19 +48,6 @@ class Browser {
         )
 
         loginButton.click()
-
-//        fun findLoginButtonAfterHover(): WebElement? {
-//            return driver.findElement(By.xpath("//*[@id=\"van-popover-830\"]/div[1]/div[2]/a[2]"))
-//        }
-//
-//
-//        val actions = Actions(driver)
-//        val loginHoverButton = driver.findElement(By.xpath("//*[@id=\"internationalHeader\"]/div[1]/div/div[3]/div[2]/div[1]/div/span/div/span"))
-//        actions.moveToElement(loginHoverButton).perform()
-//
-//        WebDriverWait(driver, 5).until(ExpectedConditions.invisibilityOf(findLoginButtonAfterHover()))
-//
-//        actions.moveToElement(findLoginButtonAfterHover()).click().perform()
     }
 
     private val CHINESE_WAN = "万"
@@ -129,7 +117,23 @@ class Browser {
 
     }
 
+    fun openNewTab() {
+        driver.executeScript("window.open()")
+    }
+
+    fun closeTabs() {
+        openNewTab()
+        val tabs = ArrayList(driver.windowHandles)
+        driver.switchTo().window(tabs[0])
+        close()
+        driver.switchTo().window(tabs[1])
+    }
+
     fun close() {
+        driver.close()
+    }
+
+    fun quit() {
         driver.quit()
         logger.info("Quit browser")
     }
