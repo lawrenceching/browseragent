@@ -1,12 +1,14 @@
 package me.imlc.browseragent
 
 import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class ElasticSearchTest {
 
 
     @Test
+    @Disabled
     internal fun test() {
         val index = "bilibili-test-${System.currentTimeMillis()}"
         val es = ElasticSearch(
