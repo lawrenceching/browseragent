@@ -93,7 +93,7 @@ class Browser {
             val text = like.text
 
             try {
-                return text.toInt()
+                return chineseNumberToInt(text)
             } catch (e: NumberFormatException) {
                 logger.error("Unable to convert text to int: $text")
             }
